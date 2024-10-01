@@ -8,7 +8,7 @@ const login = async(req, res) => {
     const { email, password } = req.body;
     const user = await prisma.employee.findUnique({ where: { email } });
     //if (!user || !(await bcrypt.compare(password, user.password))) {
-    if (!user || password != user.password) {
+    if (!user || password !== user.password) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
   
@@ -28,8 +28,8 @@ const get_emp = async(req, res) => {
 }
 //Fetch all emp
 const emp_det = async(req, res) => {
-    const events = await prisma.employee.findMany({ });
-    res.json(events);
+    const details = await prisma.employee.findMany({ });
+    res.json(details);
 }
 
 module.exports = {login, get_emp, emp_det}

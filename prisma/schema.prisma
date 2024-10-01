@@ -31,6 +31,7 @@ model Training {
   start_date    DateTime 
   end_date      DateTime
   T_id          Int
+  domain        String
   trainer       Employee  @relation(fields: [T_id], references: [id])
   scores        Score[]
 }
