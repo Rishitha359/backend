@@ -32,4 +32,58 @@ const emp_det = async(req, res) => {
     res.json(details);
 }
 
-module.exports = {login, get_emp, emp_det}
+//Adding new employees
+const create_emp = async(req, res) => {
+    const {name, email, password, Role, Designation, region, department, date_of_birth, Gender} = req.body;
+    try{
+        const details = await prisma.employee.create({
+            data: {name, email, password, Role, Designation, region, department, date_of_birth,Gender },
+        });
+        res.json(details);
+    }catch(error){
+        console.log(error)
+        res.json(error)
+    }
+}
+
+// Get all Trainers available
+const get_trainers = async(req, res) => {
+    try{
+        const details = await prisma.employee.findMany({
+            where: {Role : "Trainer"},
+        });
+        res.json(details);
+    }catch(error){
+        res.json(error)
+    }
+}
+
+// Get all Trainers available
+const get_employees = async(req, res) => {
+    try{
+        const details = await prisma.employee.findMany({
+            where: {Role : "Employee"}
+        });
+        res.json(details);
+    }catch(error){
+        res.json(error)
+    }
+}
+
+// Getting emp details for particular training
+const get_emp_train = async(req, res) => {
+    const T_id = parseInt(req.params.id);
+    try{
+        const details = await prisma.score.findMany({
+            where: { T_id },
+            include:{employee:true,
+                training: true
+            }
+        });
+        res.json(details);
+    }catch(error){
+        res.json(error)
+    }
+}
+
+module.exports = {login, get_emp, emp_det, create_emp, get_trainers, get_employees, get_emp_train}

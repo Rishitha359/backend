@@ -5,21 +5,22 @@ const prisma = new PrismaClient();
 const all_train = async(req, res) => {
     const T_id = req.user.id;
     const events = await prisma.training.findMany({where: {T_id },
-    orderBy:{start_date: 'desc'}});
+    orderBy:{start_date: 'desc'},
+    include:{scores:true}});
     res.json(events);
 }
 
 //Fetching all the training details
 const train_details = async(req, res) => {
-    const events = await prisma.training.findMany({});
+    const events = await prisma.training.findMany({orderBy:{start_date:'desc'},
+    include:{trainer:true}});
     res.json(events);
 }
 
 //Add Training
 const add_train = async(req,res) => {
     try{
-    const { id, name, start_date, end_date, domain } = req.body;
-    const T_id = req.user.id    
+    const { id, name, start_date, end_date, domain, T_id } = req.body;
     const training = await prisma.training.create({
       data: { id, name, start_date : new Date(start_date), end_date : new Date(end_date), T_id , domain},
     });

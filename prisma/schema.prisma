@@ -18,10 +18,13 @@ model Employee {
   name          String
   email         String    @unique
   password      String
+  Gender        String
   Role          String 
   Designation   String  
+  department    String
+  region        String
+  date_of_birth DateTime
   scores        Score[]
-  feedback      Feedback[]
   training      Training[]
 }
 
@@ -42,13 +45,10 @@ model Score {
   training      Training  @relation(fields: [T_id], references: [id])
   E_id          Int
   employee      Employee  @relation(fields: [E_id], references: [id])
-  score         Int
-}
-
-model Feedback {
-  id            Int       @id @default(autoincrement())
-  punctuality   Int
-  discipline    Int
-  E_id          Int
-  employee      Employee  @relation(fields: [E_id], references: [id])
+  score         Int?
+  punctuality   Int?
+  discipline    Int?
+  standards     Int?
+  remarks       String?
+  @@unique([T_id, E_id])
 }
